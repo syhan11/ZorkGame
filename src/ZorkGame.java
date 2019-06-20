@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class ZorkGame {
     private static int noRoomVisted = 0, goRoom = 0;
+    private static boolean secretKnown = false;
 
     public static void main(String[] args){
         Scanner keyboard = new Scanner(System.in);
@@ -208,15 +209,32 @@ public class ZorkGame {
         switch (dir) {
             case 'E':
             case 'e':
-                chance = rnd.nextInt(4)+1;
-                if (chance == 1){
-                    goRoom = 8;
-                    noRoomVisted++;
+                /*
+                 *
+                 */
+                if (secretKnown) {
+                    System.out.println("Do you want to re-enter the secret room (Y/N)?");
+                    Scanner keyB = new Scanner(System.in);
+                    String msg = keyB.nextLine();
+                    char ch = msg.charAt(0);
+                    if ((ch == 'Y') || (ch == 'y')) {
+                        goRoom = 8;
+                    }
+                    else {
+                        goRoom = 7;
+                    }
                 } else {
-                    goRoom = 7;
-                    noRoomVisted++;
-                }
+                    chance = rnd.nextInt(4) + 1;
 
+                    if (chance == 1) {
+                        goRoom = 8;
+                        //noRoomVisted++;
+                    } else {
+                        goRoom = 7;
+                        //noRoomVisted++;
+                    }
+                }
+                noRoomVisted++;
                 break;
 
             default:
@@ -248,7 +266,10 @@ public class ZorkGame {
     }
 
     public static void gotoRoom8(char dir){
-
+        /*
+         * The secret room
+         */
+        secretKnown = true;
         switch (dir) {
             case 'W':
             case 'w':
@@ -274,6 +295,9 @@ public class ZorkGame {
         else
             System.out.println("You were not followed by a ghost.");
 
-        System.out.println("You have visited "+ noRoomVisted + " rooms.");
+        System.out.print("You have visited "+ noRoomVisted + " rooms");
+
+        if (secretKnown)
+            System.out.println(" including the secret room.");
     }
 }
