@@ -6,6 +6,9 @@ public class ZorkGame {
     private static boolean secretKnown = false;
 
     public static void main(String[] args){
+        String[] roomNames = {"outside", "foyer", "front room", "library", "kitchen", "dining room",
+                              "vault", "parlor", "secret room"};
+
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("Do you want to play the Zork (Y/N)?");
@@ -23,7 +26,7 @@ public class ZorkGame {
                 else if (goRoom == 8)
                     System.out.println("You are in the secret room!!!");
                 else
-                    System.out.println("*****You are in room " + goRoom);
+                    System.out.printf("*****You are in %s \n", roomNames[goRoom]);
 
                 System.out.println("Which direction would you like to go (N,E,W,S)? Type Q to quit.");
 
@@ -95,7 +98,7 @@ public class ZorkGame {
                 goRoom = 0;
                 break;
         }
-        System.out.println("OUT gotoStart with goRoom=" +goRoom);
+        
     }
 
     public static void gotoRoom1(char dir){
