@@ -1,7 +1,8 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class ZorkGame {
-    private static int noRoomVisted = 0, goRoom = 1;
+    private static int noRoomVisted = 0, goRoom = 0;
 
     public static void main(String[] args){
         Scanner keyboard = new Scanner(System.in);
@@ -15,8 +16,16 @@ public class ZorkGame {
 
         if ((direction == 'y') || (direction == 'Y')) {
             // start the game
-            while (flag) {
+            while (flag && goRoom != -1) {
+                if (goRoom == 0)
+                    System.out.println("You are at the front of the house.");
+                else if (goRoom == 8)
+                    System.out.println("You are in the secret room!!!");
+                else
+                    System.out.println("*****You are in room " + goRoom);
+
                 System.out.println("Which direction would you like to go (N,E,W,S)? Type Q to quit.");
+
                 msg = keyboard.nextLine();
                 direction = msg.charAt(0);
 
@@ -24,34 +33,71 @@ public class ZorkGame {
                     goRoom = -1;
 
                 switch (goRoom) {
+                    case 0:
+                        gotoStart(direction);
+                        break;
+
                     case 1:
                         gotoRoom1(direction);
                         break;
 
                     case 2:
-                        gotoRoom2();
+                        gotoRoom2(direction);
                         break;
 
+                    case 3:
+                        gotoRoom3(direction);
+                        break;
+
+                    case 4:
+                        gotoRoom4(direction);
+                        break;
+
+                    case 5:
+                        gotoRoom5(direction);
+                        break;
+
+                    case 6:
+                        gotoRoom6(direction);
+                        break;
+
+                    case 7:
+                        gotoRoom7(direction);
+                        break;
+
+                    case 8:
+                        gotoRoom8(direction);
+                        break;
+
+
                     default:
-                        System.out.println("quit");
                         flag = false;
                         break;
                 }
             }
-            
+            finishGame();
         }
         else
             System.out.println("Maybe next time....");
 
-        System.out.println("no room visted is "+ noRoomVisted);
+    }
+
+    public static void gotoStart(char dir){
+
+        switch (dir) {
+            case 'N':
+            case 'n':
+                goRoom = 1;
+                break;
+
+            default:
+                goRoom = 0;
+                break;
+        }
+        System.out.println("OUT gotoStart with goRoom=" +goRoom);
     }
 
     public static void gotoRoom1(char dir){
-
-
-        System.out.println("I am in room 1 with "+dir);
-
-
         switch (dir) {
             case 'N':
             case 'n':
@@ -59,17 +105,175 @@ public class ZorkGame {
                 noRoomVisted++;
                 break;
 
+            case 'S':
+            case 's':
+                goRoom = -1;
+                noRoomVisted++;
+                break;
+
+
             default:
                 goRoom = 1;
                 break;
         }
-        System.out.println("done with room1");
 
     }
 
-    public static void gotoRoom2() {
-        noRoomVisted++;
-        System.out.println("I am in room 2");
+    public static void gotoRoom2(char dir) {
+        switch (dir) {
+            case 'W':
+            case 'w':
+                goRoom = 3;
+                noRoomVisted++;
+                break;
 
+            case 'E':
+            case 'e':
+                goRoom = 4;
+                noRoomVisted++;
+                break;
+
+            case 'S':
+            case 's':
+                goRoom = 1;
+                noRoomVisted++;
+                break;
+
+            default:
+                goRoom = 2;
+                break;
+        }
+    }
+
+    public static void gotoRoom3(char dir){
+
+        switch (dir) {
+            case 'N':
+            case 'n':
+                goRoom = 5;
+                noRoomVisted++;
+                break;
+
+            case 'E':
+            case 'e':
+                goRoom = 2;
+                noRoomVisted++;
+                break;
+
+            default:
+                goRoom = 3;
+                break;
+        }
+    }
+
+    public static void gotoRoom4(char dir){
+        switch (dir) {
+            case 'N':
+            case 'n':
+                goRoom = 7;
+                noRoomVisted++;
+                break;
+
+            case 'W':
+            case 'w':
+                goRoom = 2;
+                noRoomVisted++;
+                break;
+
+            default:
+                goRoom = 4;
+                break;
+        }
+    }
+
+
+    public static void gotoRoom5(char dir) {
+        switch (dir) {
+            case 'S':
+            case 's':
+                goRoom = 3;
+                noRoomVisted++;
+                break;
+            default:
+                goRoom = 5;
+                break;
+        }
+    }
+
+    public static void gotoRoom6(char dir){
+
+        Random rnd = new Random();
+        int chance;
+
+        switch (dir) {
+            case 'E':
+            case 'e':
+                chance = rnd.nextInt(4)+1;
+                if (chance == 1){
+                    goRoom = 8;
+                    noRoomVisted++;
+                } else {
+                    goRoom = 7;
+                    noRoomVisted++;
+                }
+
+                break;
+
+            default:
+                goRoom = 6;
+                break;
+        }
+
+    }
+
+    public static void gotoRoom7(char dir){
+
+        switch (dir) {
+            case 'W':
+            case 'w':
+                goRoom = 6;
+                noRoomVisted++;
+                break;
+            case 'S':
+            case 's':
+                goRoom = 4;
+                noRoomVisted++;
+                break;
+            default:
+                goRoom = 7;
+                break;
+
+        }
+
+    }
+
+    public static void gotoRoom8(char dir){
+
+        switch (dir) {
+            case 'W':
+            case 'w':
+                goRoom = 6;
+                noRoomVisted++;
+                break;
+            default:
+                goRoom = 8;
+                break;
+
+        }
+
+    }
+
+
+
+    public static void finishGame() {
+        Random rand = new Random();
+        int ghost = rand.nextInt(4); // random number from 0 to 3
+
+        if (ghost == 0)
+            System.out.println("You were followed by a ghost.");
+        else
+            System.out.println("You were not followed by a ghost.");
+
+        System.out.println("You have visited "+ noRoomVisted + " rooms.");
     }
 }
